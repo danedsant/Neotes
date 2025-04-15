@@ -1,0 +1,359 @@
+:root {
+    --bg-color: #1a1d24;
+    --text-color: #e0e0e0;
+    --panel-bg: #252a33;
+    --border-color: #3f4656;
+    --neon-color: #00ffff;
+    --neon-rgb: 0, 255, 255;
+    --accent-color: #4d5a70;
+    --title-font-size: 2em;
+    --content-font-size: 1em;
+    --futuristic-font: 'Orbitron', sans-serif;
+    --body-font: 'Roboto', sans-serif;
+}
+
+body {
+    margin: 0;
+    font-family: var(--body-font);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    overflow: hidden;
+}
+
+.app-container {
+    display: flex;
+    height: 100vh;
+    position: relative;
+}
+
+.app-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 3px solid var(--neon-color);
+    box-shadow:
+        0 0 5px var(--neon-color),
+        0 0 10px var(--neon-color),
+        0 0 20px var(--neon-color),
+        inset 0 0 5px var(--neon-color),
+        inset 0 0 10px var(--neon-color);
+    animation: pulse-neon 2s infinite alternate;
+    pointer-events: none;
+    z-index: 10;
+    border-radius: 3px;
+}
+
+@keyframes pulse-neon {
+    from {
+        opacity: 0.7;
+        box-shadow:
+            0 0 5px var(--neon-color),
+            0 0 10px var(--neon-color),
+            0 0 15px var(--neon-color),
+            inset 0 0 5px var(--neon-color),
+            inset 0 0 8px var(--neon-color);
+    }
+    to {
+        opacity: 1;
+         box-shadow:
+            0 0 8px var(--neon-color),
+            0 0 15px var(--neon-color),
+            0 0 25px var(--neon-color),
+            inset 0 0 8px var(--neon-color),
+            inset 0 0 12px var(--neon-color);
+    }
+}
+
+.left-panel {
+    width: 250px;
+    flex-shrink: 0;
+    background-color: var(--panel-bg);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    position: relative;
+    z-index: 1;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    align-items: center;
+}
+
+#new-note-btn,
+#edit-palette-btn,
+.editor-toolbar button,
+.modal button {
+    background-color: var(--accent-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    font-size: 0.9em;
+}
+#new-note-btn:hover,
+#edit-palette-btn:hover,
+.editor-toolbar button:hover,
+.modal button:hover {
+    background-color: hsl(from var(--accent-color) h s calc(l + 5%));
+    box-shadow: 0 0 5px var(--neon-color);
+}
+
+#new-note-btn i,
+#edit-palette-btn i,
+.editor-toolbar i {
+    margin-right: 5px;
+}
+
+.note-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+}
+
+.note-list li {
+    padding: 10px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    border-radius: 3px;
+    border: 1px solid transparent;
+    border-left: 3px solid transparent;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.note-list li:hover {
+    background-color: var(--accent-color);
+}
+
+.note-list li.selected {
+    background-color: var(--accent-color);
+    border-left: 3px solid var(--neon-color);
+    font-weight: bold;
+}
+
+.note-list li.no-notes {
+    color: var(--accent-color);
+    cursor: default;
+    text-align: center;
+    padding: 20px;
+}
+
+
+.color-palette-editor {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-color);
+}
+.color-palette-editor label {
+    margin-right: 10px;
+    font-size: 0.9em;
+}
+#neon-color-picker {
+    cursor: pointer;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-color);
+    padding: 2px;
+    vertical-align: middle;
+    width: 30px;
+    height: 20px;
+}
+
+.right-panel {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    z-index: 1;
+}
+
+.note-editor {
+    display: none;
+    flex-direction: column;
+    height: 100%;
+}
+
+.note-editor.active {
+    display: flex;
+}
+
+.welcome-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    text-align: center;
+    color: var(--accent-color);
+    padding: 20px;
+}
+.welcome-screen.hidden {
+    display: none;
+}
+
+#note-title-input {
+    font-family: var(--futuristic-font), sans-serif;
+    font-size: var(--title-font-size);
+    background: none;
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-color);
+    padding: 15px 20px;
+    margin: 0;
+    outline: none;
+    flex-shrink: 0;
+}
+
+.editor-toolbar {
+    padding: 10px 20px;
+    background-color: var(--panel-bg);
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
+}
+
+.editor-toolbar button {
+    margin-right: 10px;
+}
+
+.note-metadata {
+    padding: 8px 20px;
+    background-color: var(--panel-bg);
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.8em;
+    color: var(--accent-color);
+    text-align: right;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 0;
+}
+.note-metadata.hidden {
+    display: none;
+}
+
+.note-metadata span {
+    margin: 0 5px;
+}
+
+#note-content-input {
+    flex-grow: 1;
+    padding: 20px;
+    font-size: var(--content-font-size);
+    line-height: 1.6;
+    color: var(--text-color);
+    outline: none;
+    overflow-y: auto;
+    overflow-x: auto;
+    caret-color: var(--neon-color);
+    word-wrap: break-word;
+}
+
+#note-content-input:empty::before {
+    content: attr(data-placeholder);
+    color: var(--accent-color);
+    pointer-events: none;
+    display: block;
+}
+
+#note-content-input img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 15px 0;
+    cursor: pointer;
+    border: 2px solid transparent;
+    border-radius: 3px;
+    transition: border-color 0.2s ease;
+}
+
+#note-content-input img:hover {
+   border-color: var(--accent-color);
+}
+
+#note-content-input img.resizable {
+    resize: both;
+    overflow: hidden;
+    border: 2px dashed var(--neon-color);
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal:not(.hidden) {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background-color: var(--panel-bg);
+    padding: 30px 40px;
+    border-radius: 5px;
+    text-align: center;
+    position: relative;
+    border: 2px solid var(--border-color);
+    box-shadow: 0 5px 20px rgba(0,0,0, 0.4);
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+}
+
+.modal:not(.hidden) .modal-content {
+    transform: scale(1);
+}
+
+.modal-content.pulsating-border::before {
+    content: '';
+    position: absolute;
+    top: -3px; left: -3px; right: -3px; bottom: -3px;
+    border: 3px solid var(--neon-color);
+    border-radius: 8px;
+    box-shadow:
+        0 0 5px var(--neon-color),
+        0 0 10px var(--neon-color),
+        inset 0 0 5px var(--neon-color);
+    animation: pulse-neon 2s infinite alternate;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.modal p {
+    margin-bottom: 25px;
+    font-size: 1.1em;
+    color: var(--text-color);
+}
+
+.modal button {
+    margin: 0 10px;
+    min-width: 100px;
+}
+
+.hidden {
+    display: none !important;
+}
